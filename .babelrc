@@ -1,0 +1,12 @@
+{
+    "plugins": [
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "loose": true,
+                "version": "legacy"
+            }
+        ],
+        "@babel/plugin-proposal-class-properties"
+    ]
+}
