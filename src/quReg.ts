@@ -1,7 +1,7 @@
 import Complex from './complex';
 
 export default class QuReg {
-  private regSize = 0;
+  private readonly regSize: number;
 
   public state: Complex[];
 
@@ -10,7 +10,8 @@ export default class QuReg {
     this.state = Array.from({ length: Math.pow(2, size) }, () => new Complex());
   }
 
-  // Return the probability amplitude of the state's state.
+  /** @returns QuReg states
+   */
   getProb(state: number) {
     if (this.state[state] === undefined) {
       throw new Error(`Invalid state index ${state} requested!`);
@@ -36,10 +37,8 @@ export default class QuReg {
     this.state = this.state.map((st) => new Complex(st.getReal() * b, st.getImaginary() * b));
   }
 
-  // Measure a state, and return the decimal value measured.  Collapse
-  // the state so that the probability of measuring the measured value in
-  // the future is 1, and the probability of measuring any other state is
-  // 0.
+  /** Вычисление значения QuReg
+   */
   decMeasure() {
     const rand1 = Math.random();
     let a = 0;

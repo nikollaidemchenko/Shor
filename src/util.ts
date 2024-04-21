@@ -115,12 +115,11 @@ export const modexp = (x: number, a: number, n: number) => {
   return value;
 };
 
-
-// Эта функция находит знаменатель q наилучшего рационального
-// знаменатель q для аппроксимации p/q для c с q < qmax.
-
-// This function finds the denominator q of the best rational
-// denominator q for approximating p / q for c with q < qmax.
+/** Эта функция находит знаменатель q наилучшего рационального
+ * знаменатель q для аппроксимации p/q для c с q < qmax.
+ * @return true если четное
+ * @return false если нечетное
+ */
 export const denominator = (c: number, qmax: number) => {
   let y = c;
   let q0 = 0;
@@ -153,26 +152,14 @@ export const denominator = (c: number, qmax: number) => {
  */
 export const max = (a: number, b: number) => (a > b ? a : b);
 
-//This function computes the discrete Fourier transformation on a register's
-//0 -> q - 1 entries.
+/** Вычесление преобразования Фурье
+ */
 export const dfp = (reg: QuReg, q: number) => {
-  //The Fourier transform maps functions in the time domain to
-  //functions in the frequency domain.  Frequency is 1/period, thus
-  //this Fourier transform will take our periodic register, and peak it
-  //at multiples of the inverse period.  Our Fourier transformation on
-  //the state a takes it to the state: q^(-.5) * Sum[c = 0 -> c = q - 1,
-  //c * e^(2*Pi*i*a*c / q)].  Remember, e^ix = cos x + i*sin x.
 
   let init = Array.from({length: q}, () => new Complex());
   const tmpcomp = new Complex(0, 0);
 
-  //Here we do things that a real quantum computer couldn't do, such
-  //as look as individual values without collapsing state.  The good
-  //news is that in a real quantum computer you could build a gate
-  //which would what this out all in one step.
   for (let a = 0; a < q; a++) {
-    //This if statement helps prevent previous round off errors from
-    //propagating further.
     if (
       Math.pow(reg.getProb(a).getReal(), 2) + Math.pow(reg.getProb(a).getImaginary(), 2) >
       Math.pow(10, -14)
@@ -209,7 +196,6 @@ export const dfp = (reg: QuReg, q: number) => {
     return el;
   });
 
-  console.log(init);
   reg.setState(init);
   reg.norm();
 };

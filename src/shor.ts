@@ -63,35 +63,13 @@ export class Shor {
 
     console.groupEnd();
 
-    // TODO: Проверить комментарий
     // Этот массив запомнает, какие значения q получены для x^q mod n.
-    // Необходимо сохранить эти значения для использования при сворачивании
-    // регистрира один после измерения регистра два. В реальном квантовом
-    // компьютере эти регистры будут запутаны, и, следовательно, это лишная
-    // операция вообще не понадобится. Законы квантовые
-    // механика говорят, что первый регистр тоже рухнет, и
-    // в состояние, соответствующее измеренному значению второго резистора.
-
-    //This array will remember what values of q produced for x^q mod n.
-    //It is necessary to retain these values for use when we collapse
-    //register one after measuring register two.  In a real quantum
-    //computer these registers would be entangled, and thus this extra
-    //bookkeeping would not be needed at all.  The laws of quantum
-    //mechanics dictate that register one would collapse as well, and
-    //into a state consistent with the measured value in resister two.
     const modex = [];
 
-
-    // TODO: Проверить комментарий
-    // Этот массив содержит амплитуды вероятности свернутого состояния
+    // Этот массив содержит амплитуды вероятности колапсирующего состояния
     // первого регистра, после измерения второго регистра он используется
     // чтобы привести первый регистр в состояние, соответствующее измеренному в
     // регистрире два.
-
-    //This array holds the probability amplitudes of the collapsed state
-    //of register one, after register two has been measured it is used
-    //to put register one in a state consistent with that measured in
-    //register two.
     const collapse = Array.from({ length: q }, () => new Complex());
 
     // Это временное значение.
@@ -265,8 +243,6 @@ export class Shor {
       if (done) {
 
         //Сейчас c =~ lambda / r для некоторой целочисленной lambda.
-        // TODO: удалить этот коммент
-        // Заимствовано у модификации Бернарда Опнера.
         lambda = m / q;
 
         console.group(`Шаг 10: Взять значение m и выполнить постобработку, которая вычислит r на основе значений m и q.
@@ -277,15 +253,9 @@ export class Shor {
         4) Если наш кандидат r нечетный, мы удваиваем его, если это приводит к значению меньше q.
         Попытка произвести алгоритм: ${tries + 1}`);
 
-
-        // TODO: проверить коммент
         // Вычисляем знаменатель наилучшего рационального приближения
         // к lambda с den < q. Поскольку lambda — это lambda/r для некоторого целого числа
-        // lambda, это даст нам предположение о, нашем периоде.
-
-        //Calculate the denominator of the best rational approximation
-        //to c with den < q.  Since c is lambda / r for some integer
-        //lambda, this will provide us with our guess for r, our period.
+        // lambda, это даст нам предположение о r, нашем периоде.
         den = denominator(lambda, q);
 
         //Вычисляем числитель из знаменателя.
@@ -303,8 +273,6 @@ export class Shor {
           den = 2 * den;
         }
 
-        // TODO: перефразировать
-        // Инициализация помогающий переменых
         e = a = b = factor = 0;
 
         // Ошибка, если знаменатель нечетный.
@@ -331,33 +299,20 @@ export class Shor {
 
           if (a === 0 || b === 0) {
             done = false;
-            console.warn('Один из ответов x^r/2 +- 1 mod(n) = 0');
+            console.warn('Ошибка, попытка вычеслить n mod(0) для числа n');
           } else {
             factor = max(gcd(n, a), gcd(n, b));
           }
         }
       }
 
-      // //НОД вернет -1, если попытается вычислить НОД из двух
-      // //чисел, где в какой-то момент он пытается принять модуль
-      // //число и 0.
-      //
-      // //GCD will return a -1 if it tried to calculate the GCD of two
-      // //numbers where at some point it tries to take the modulus of a
-      // //number and 0.
-      // if (factor === -1) {
-      //   console.log('tError, tried to calculate n mod 0 for some n.  Trying again.');
-      //   done = false;
-      // }
-
       if ((factor === n || factor === 1) && done) {
         console.log(`Найдены тривиальные множетели 1 и ${n}. Попытка ${tries + 1} не удалась`);
         done = false;
       }
 
-      // Если все прошло гладко, то мы завершаем алгоритм.
+      // Если все прошло хорошо, то мы завершаем алгоритм.
       // В противном случае начинаем сначала.
-
       if (factor !== 0 && done) {
         console.log(`${n} = ${factor} * ${n / factor}`);
       } else if (done) {
