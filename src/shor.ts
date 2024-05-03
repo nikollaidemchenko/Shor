@@ -63,7 +63,7 @@ export class Shor {
 
     console.groupEnd();
 
-    // Этот массив запомнает, какие значения q получены для x^q mod n.
+    // Этот массив запомнает, какие значения q получены для x^a mod n.
     const modex = [];
 
     // Этот массив содержит амплитуды вероятности колапсирующего состояния
@@ -127,7 +127,7 @@ export class Shor {
 
       // Заполняем первый регистр равновзвешенной суперпозицией целых чисел 0 до q - 1.
       reg1.setAverage(q - 1);
-      reg2.setToStart(regSize(n));
+      reg2.clearReg(regSize(n));
       console.log('Регистр 1 после заполнения:', reg1.state.map((el) => [el.getReal(), el.getImaginary()]));
       console.log('Регистр 2 после заполнения:', reg2.state.map((el) => [el.getReal(), el.getImaginary()]));
       console.groupEnd();
@@ -205,7 +205,7 @@ export class Shor {
       console.log('Регистр 1:', reg1.state.map((el) => [el.getReal(), el.getImaginary()]));
       console.groupEnd();
 
-      console.group(`Шаг 8: Теперь вычислим дискретное преобразование Фурье для первого регистра. Попытка произвести алгоритм: ${tries + 1}`);
+      console.group(`Шаг 8: Теперь вычисли преобразование Фурье для первого регистра. Попытка произвести алгоритм: ${tries + 1}`);
 
       // Преобразование Фурье.
       dfp(reg1, q);
@@ -235,7 +235,7 @@ export class Shor {
       // decMeasure вернет -1 в качестве кода ошибки, поскольку
       // из-за ошибок округления иногда не удается измерить состояние.
       if (m === -1) {
-        console.warn('m === 1, Попытка ${tries + 1} провалилась');
+        console.warn('m === -1, Попытка ${tries + 1} провалилась');
         done = false;
       }
 
@@ -269,7 +269,6 @@ export class Shor {
         // умноженный два все равно меньше q, мы можем его использовать.
         if (den % 2 === 1 && 2 * den < q) {
           console.warn('Наш период нечетный. Умножаем его на 2');
-          p = 2 * p;
           den = 2 * den;
         }
 

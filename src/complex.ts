@@ -3,33 +3,33 @@ export default class Complex {
 
   /** Переопределение значений комплексного числа
    */
-  set(newReal: number, newImaginary: number) {
+  set(newReal: number, newImaginary: number): void {
     this.real = newReal;
     this.imaginary = newImaginary;
   }
 
   /** Присвоение комплексных чисел
    */
-  assignment(c: Complex) {
+  assignment(c: Complex): void {
     this.real = c.real;
     this.imaginary = c.imaginary;
   }
 
   /** @returns Действтельная часть
    */
-  getReal() {
+  getReal(): number {
     return this.real;
   }
 
   /** @returns Мнимая часть
    */
-  getImaginary() {
+  getImaginary(): number {
     return this.imaginary;
   }
 
   /** Суммирование комплексных чисел
    */
-  add(c: Complex) {
+  add(c: Complex): Complex {
     this.real += c.real;
     this.imaginary += c.imaginary;
     return this;
@@ -37,7 +37,7 @@ export default class Complex {
 
   /** Умножение комплексных чисел
    */
-  multiply(c: Complex) {
+  multiply(c: Complex): Complex {
     const real = this.real * c.real - this.imaginary * c.imaginary;
     const imaginary = this.real * c.imaginary + this.imaginary * c.real;
 

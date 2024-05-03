@@ -28,7 +28,10 @@ export default class QuReg {
     let b = 0;
 
     this.state.forEach((st) => {
-      b += Math.pow(st.getReal(), 2) + Math.pow(st.getImaginary(), 2);
+      const a = Math.pow(st.getReal(), 2);
+      const c = Math.pow(st.getImaginary(), 2);
+      const n = a + c;
+      b += n;
     });
 
 
@@ -39,15 +42,15 @@ export default class QuReg {
 
   /** Вычисление значения QuReg
    */
-  decMeasure() {
-    const rand1 = Math.random();
+  decMeasure(): number {
+    const rand = Math.random();
     let a = 0;
     let b = 0;
 
     for (let i = 0; i < Math.pow(2, this.regSize); i += 1) {
       b += Math.pow(this.state[i].getReal(), 2) + Math.pow(this.state[i].getImaginary(), 2);
 
-      if (b > rand1 && rand1 > a) {
+      if (b > rand && rand > a) {
         for (let j = 0; j < Math.pow(2, this.regSize); j += 1) {
           this.state[j].set(0, 0);
         }
@@ -63,12 +66,12 @@ export default class QuReg {
   }
 
   /** Сетает новое состояние для регистра */
-  setState(new_state: Complex[]) {
+  setState(new_state: Complex[]): void {
     this.state = new_state.map((st) => new Complex(st.getReal(), st.getImaginary()));
   }
 
-  /** Сетает новое состояние для регистра */
-  setToStart(size: number) {
+  /** Очистка регистра */
+  clearReg(size: number) {
     this.state = Array.from({ length: Math.pow(2, size) }, () => new Complex());
   }
 
